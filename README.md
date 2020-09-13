@@ -1,3 +1,3 @@
 # NukedImage
 
-A description of this package.
+Compositionally-friendly, publication-based Nuke image consumers for SwiftUI.
