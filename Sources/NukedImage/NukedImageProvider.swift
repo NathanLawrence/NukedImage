@@ -17,21 +17,28 @@ class NukedImageProvider {
         self.pipeline = pipeline ?? ImagePipeline.shared
     }
 
-    func imagePublisher(for url: URL) {
+    func imagePublisher(for url: URL) -> PassthroughSubject<PlatformImage, ImagePipeline.Error>{
+        if let subject = subjects[url] {
+            return subject
+        }
+
+        let subject = PassthroughSubject<PlatformImage, ImagePipeline.Error>()
+        subjects[url] = subject
+
         pipeline.loadImage(with: url) { _,_,_ in
             // Progress handler code
-        } completion: { result in
+        } completion: { [subject] result in
             switch result {
             case .success(let imageResponse):
-                guard let url = imageResponse.urlResponse?.url,
-                      let subject = self.subjects[url]
-                      else { return }
                 subject.send(imageResponse.image)
                 subject.send(completion: .finished)
+                self.subjects.removeValue(forKey: url)
                 return
             default:
                 return
             }
         }
+
+        return subject
     }
 }
