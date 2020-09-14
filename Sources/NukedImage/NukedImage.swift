@@ -21,20 +21,6 @@ struct NukedImage: View {
 
     @State private var loadedImage: PlatformImage? = nil
 
-    /*
-     public var body: some View {
-     /**
-     Coalescing to an empty UIImage instance avoids the sticky problems that might arise
-     due to an if let syntax causing view lifecycle issues with onAppear/onDisappear
-     */
-     Image(uiImage: image)
-     .resizable()
-     .onReceive(MKRemoteImageProvider.shared[url]) { imageResult in
-     image = imageResult
-     }
-     }
-     */
-
     var useImage: PlatformImage {
         loadedImage ?? placeholder
     }
