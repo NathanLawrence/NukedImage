@@ -29,9 +29,9 @@ struct NukedImage: View {
         SwiftUI.Image(platformImage: useImage)
             .resizable()
             .onReceive(provider.imagePublisher(for: url)
-                        .replaceError(with: PlatformImage()), perform: { value in
-                            self.loadedImage = value
-            })
+                        .replaceError(with: PlatformImage())) { value in
+                self.loadedImage = value
+            }
     }
 }
 
